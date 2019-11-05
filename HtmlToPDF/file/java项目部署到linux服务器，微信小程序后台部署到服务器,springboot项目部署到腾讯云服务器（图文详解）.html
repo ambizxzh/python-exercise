@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<article itemscope="itemscope" itemtype="http://schema.org/Article" class="article" data-v-4917d118><meta itemprop="url" content="https://juejin.im/post/5d6b206bf265da03ae788d01"><meta itemprop="headline" content="java项目部署到linux服务器，微信小程序后台部署到服务器,springboot项目部署到腾讯云服务器（图文详解）"><meta itemprop="keywords" content="服务器"><meta itemprop="datePublished" content="2019-09-01T05:38:07.995Z"><meta itemprop="image" content="https://b-gold-cdn.xitu.io/icon/icon-128.png"><div itemprop="author" itemscope="itemscope" itemtype="http://schema.org/Person"><meta itemprop="name" content="编程小石头"><meta itemprop="url" content="https://juejin.im/user/586b1a60128fe1005709c932"></div><div itemprop="publisher" itemscope="itemscope" itemtype="http://schema.org/Organization"><meta itemprop="name" content="掘金"><div itemprop="logo" itemscope="itemscope" itemtype="https://schema.org/ImageObject"><meta itemprop="url" content="https://b-gold-cdn.xitu.io/icon/icon-white-180.png"><meta itemprop="width" content="180"><meta itemprop="height" content="180"></div></div><div class="author-info-block" data-v-4917d118><a href="/post/5d6b206bf265da03ae788d01" target="_blank" rel="" class="avatar-link" data-v-4917d118><div src="https://b-gold-cdn.xitu.io/v3/static/img/default-avatar.e30559a.svg" class="lazy avatar avatar" style="background-image:none;" data-v-340b0fa8 data-v-56dcd6bc data-v-4917d118></div></a><div class="author-info-box" data-v-4917d118><a href="/post/5d6b206bf265da03ae788d01" target="_blank" rel="" class="username username ellipsis" data-v-f46f1956 data-v-4917d118><!----></a><div class="meta-box" data-v-4917d118><time datetime="2019-09-01T05:38:07.995Z" title="Sun Sep 01 2019 13:38:07 GMT+0800 (China Standard Time)" class="time" data-v-4917d118>2019年09月01日</time><span class="views-count" data-v-4917d118>阅读 529</span><!----></div></div><!----></div><!----><h1 class="article-title" data-v-4917d118>java项目部署到linux服务器，微信小程序后台部署到服务器,springboot项目部署到腾讯云服务器（图文详解）</h1><div data-id="5d6b5940f265da03a53a4f6b" itemprop="articleBody" class="article-content" data-v-4917d118><blockquote>
+<p>前面给大家讲了一个点餐系统的开发，包括java点餐后台和微信点餐小程序。可是都是教大家如何在本地把项目跑起来。今天就来教大家如何把这个点餐系统部署到服务器，实现商用。</p>
+</blockquote>
+<h1 class="heading" data-id="heading-0">传送门</h1>
+<p>点餐系统的开发，java后台+微信小程序：<a target="_blank" href="https://blog.csdn.net/qiushi_1990/article/details/97749686" rel="nofollow noopener noreferrer">blog.csdn.net/qiushi_1990…</a></p>
+<h1 class="heading" data-id="heading-1">本节知识点</h1>
+<ul>
+<li>1，使用springboot开发java项目</li>
+<li>2，小程序后台的开发</li>
+<li>3，小程序后台部署到服务器</li>
+<li>4，java项目部署到服务器</li>
+<li>5，springboot项目部署到服务器</li>
+</ul>
+<h1 class="heading" data-id="heading-2">准备工作</h1>
+<ul>
+<li>1，需要购买一台腾讯云服务器</li>
+<li>2，需要开发一个springboot后台项目</li>
+<li>3，需要购买一个域名，并做备案。</li>
+<li>4，需要配置你的服务器环境 jdk，mysql（下面会做讲解）</li>
+</ul>
+<p>我们默认你上面的准备工作都做好了，下面我们就来开始学习把后台项目部署到服务器，让所有人都可以访问到你的服务器。</p>
+<h1 class="heading" data-id="heading-3">一，首先创建一个springboot（java项目）</h1>
+<p>1，创建springboot项目，选用jdk1.8
+</p><figure><img class="lazyload" src="https://user-gold-cdn.xitu.io/2019/9/1/16cea81b72663e1c?imageView2/0/w/1280/h/960/ignore-error/1" data-width="1280" data-height="949"><figcaption></figcaption></figure>
+2，填写包名，选择配置，这些保持默认即可
+<figure><img class="lazyload" src="https://user-gold-cdn.xitu.io/2019/9/1/16cea8f78e056298?imageView2/0/w/1280/h/960/ignore-error/1" data-width="1280" data-height="946"><figcaption></figcaption></figure>
+3，添加一些项目依赖，使用最新springboot版本2.1.7
+<figure><img class="lazyload" src="https://user-gold-cdn.xitu.io/2019/9/1/16cea923d768a3fe?imageView2/0/w/1280/h/960/ignore-error/1" data-width="1280" data-height="935"><figcaption></figcaption></figure>
+4，项目名，项目目录设置。可以保持默认
+<figure><img class="lazyload" src="https://user-gold-cdn.xitu.io/2019/9/1/16cea93d591c19c4?imageView2/0/w/1280/h/960/ignore-error/1" data-width="1280" data-height="939"><figcaption></figcaption></figure>
+5，导入依赖，下面两种方式都可以。
+<figure><img class="lazyload" src="https://user-gold-cdn.xitu.io/2019/9/1/16cea986b9083069?imageView2/0/w/1280/h/960/ignore-error/1" data-width="1280" data-height="770"><figcaption></figcaption></figure>
+6，实现一个简单的后台数据接口
+<figure><img class="lazyload" src="https://user-gold-cdn.xitu.io/2019/9/1/16cea9aa138b3573?imageView2/0/w/1280/h/960/ignore-error/1" data-width="1280" data-height="652"><figcaption></figcaption></figure>
+如果上面这些简单的创建一个项目的步骤你不是很懂，可以看下我录制的java零基础视频：<a target="_blank" href="https://edu.csdn.net/course/detail/23443" rel="nofollow noopener noreferrer">edu.csdn.net/course/deta…</a><p></p>
+<ul>
+<li>7，本地运行项目
+<figure><img class="lazyload" src="https://user-gold-cdn.xitu.io/2019/9/1/16ceaa07942c41ea?imageView2/0/w/1280/h/960/ignore-error/1" data-width="1280" data-height="579"><figcaption></figcaption></figure>
+8，运行成功的标示，在run里看到控制台日志显示项目端口是 8080
+<figure><img class="lazyload" src="https://user-gold-cdn.xitu.io/2019/9/1/16ceaa178da83d3d?imageView2/0/w/1280/h/960/ignore-error/1" data-width="1280" data-height="781"><figcaption></figcaption></figure>
+9，浏览器里访问本地项目，查看访问效果。可以看到我们成功的访问到了后台数据。
+<figure><img class="lazyload" src="https://user-gold-cdn.xitu.io/2019/9/1/16ceaa3c14be47dd?imageView2/0/w/1280/h/960/ignore-error/1" data-width="834" data-height="392"><figcaption></figcaption></figure></li>
+</ul>
+<h1 class="heading" data-id="heading-4">二，项目打包</h1>
+<p>上面给大家演示的是在idea开发者工具里启动的项目，我们正常部署服务器的时候，肯定不会有开发者工具的，所以我们接下来要先学会项目打包，然后在本地通过命令行的方式运行后台项目。</p>
+<ul>
+<li>1，项目打包
+<figure><img class="lazyload" src="https://user-gold-cdn.xitu.io/2019/9/1/16ceaa8efd70968f?imageView2/0/w/1280/h/960/ignore-error/1" data-width="1280" data-height="721"><figcaption></figcaption></figure></li>
+<li>2，打包成功
+<figure><img class="lazyload" src="https://user-gold-cdn.xitu.io/2019/9/1/16ceaaa61ed35be8?imageView2/0/w/1280/h/960/ignore-error/1" data-width="1280" data-height="740"><figcaption></figcaption></figure></li>
+<li>3，修改jar的名字（也可以不改名字，我是觉得这个jar名字太长，所以改一个短的）
+<figure><img class="lazyload" src="https://user-gold-cdn.xitu.io/2019/9/1/16ceaad2d5ea7e67?imageView2/0/w/1280/h/960/ignore-error/1" data-width="1130" data-height="1154"><figcaption></figcaption></figure>
+我这里改名为qcl80.jar 建议大家也改成这个名字，因为后面运行脚本里用的就是qcl80这个名字，大家和我保持一致，省得出问题。
+<figure><img class="lazyload" src="https://user-gold-cdn.xitu.io/2019/9/1/16ceaaf48aee6fc5?imageView2/0/w/1280/h/960/ignore-error/1" data-width="480" data-height="356"><figcaption></figcaption></figure></li>
+</ul>
+<h1 class="heading" data-id="heading-5">三，命令行运行jar包</h1>
+<p>1，把上面的qcl80.jar这个文件拖动到我们的项目里，并打开idea自带的命令行
+</p><figure><img class="lazyload" src="https://user-gold-cdn.xitu.io/2019/9/1/16ceab553319fabd?imageView2/0/w/1280/h/960/ignore-error/1" data-width="1258" data-height="1280"><figcaption></figcaption></figure>
+2,命令行里输入 ls
+<figure><img class="lazyload" src="https://user-gold-cdn.xitu.io/2019/9/1/16ceab6472af6077?imageView2/0/w/1280/h/960/ignore-error/1" data-width="1280" data-height="535"><figcaption></figcaption></figure>
+3,命令行里输入   java -jar qcl80.jar<br>
+<figure><img class="lazyload" src="https://user-gold-cdn.xitu.io/2019/9/1/16ceab732252cb0f?imageView2/0/w/1280/h/960/ignore-error/1" data-width="930" data-height="110"><figcaption></figcaption></figure>
+注意：如果你这里提示java命令不存在，你需要配置下java的环境变量。这里不做讲解，自己百度下 ‘java 环境变量’ 就可以找到一大堆教程。<p></p>
+<ul>
+<li>4，输入上面命令后，回车键，即可启动项目
+<figure><img class="lazyload" src="https://user-gold-cdn.xitu.io/2019/9/1/16ceab827b33ddd8?imageView2/0/w/1280/h/960/ignore-error/1" data-width="1280" data-height="707"><figcaption></figcaption></figure>
+这时候再去浏览器里访问，还是可以访问到的</li>
+</ul>
+<h1 class="heading" data-id="heading-6">四，服务器环境的登录</h1>
+<p>我们前面三步，都是在自己的本地电脑启动的后台项目，这样我们只能在自己的电脑浏览器访问到，别人是访问不到的，如果想让别人访问，就需要把我的qcl80.jar这个文件传到服务器上，并且在服务器上通过命令行启动这个java项目，这样别人才可以访问到</p>
+<h3 class="heading" data-id="heading-7">所以我们接下来要讲服务器环境的搭建。</h3>
+<ul>
+<li>1，首先我们要买一台云服务器（推荐阿里云或者腾讯云）</li>
+<li>2，买完服务器后我们登录服务器后台，这里以腾讯云为例。
+<figure><img class="lazyload" src="https://user-gold-cdn.xitu.io/2019/9/1/16ceac0c15b61dd8?imageView2/0/w/1280/h/960/ignore-error/1" data-width="1280" data-height="692"><figcaption></figcaption></figure></li>
+<li>3，点击登录
+<figure><img class="lazyload" src="https://user-gold-cdn.xitu.io/2019/9/1/16ceac51c9b466f9?imageView2/0/w/1280/h/960/ignore-error/1" data-width="1280" data-height="790"><figcaption></figcaption></figure>
+重置密码方式
+<figure><img class="lazyload" src="https://user-gold-cdn.xitu.io/2019/9/1/16ceac7a72da71f5?imageView2/0/w/1280/h/960/ignore-error/1" data-width="1280" data-height="725"><figcaption></figcaption></figure></li>
+<li>4，输入实力的账号和密码，登录linux服务器
+<figure><img class="lazyload" src="https://user-gold-cdn.xitu.io/2019/9/1/16ceac659fb69e41?imageView2/0/w/1280/h/960/ignore-error/1" data-width="982" data-height="1110"><figcaption></figcaption></figure></li>
+<li>5，登录成功
+<figure><img class="lazyload" src="https://user-gold-cdn.xitu.io/2019/9/1/16ceac85f3d39367?imageView2/0/w/1280/h/960/ignore-error/1" data-width="1280" data-height="480"><figcaption></figcaption></figure>
+大家不要看到一堆命令行，就头疼，我接下来会教大家如何一步步配置服务器环境的。大家只需要跟着我的步骤，一步步来就可以了。</li>
+</ul>
+<h1 class="heading" data-id="heading-8">五，linux服务器安装jdk</h1>
+<ul>
+<li>1，采用yum安装jdk1.8，非常简单</li>
+</ul>
+<pre><code class="hljs bash copyable" lang="bash">yum search java|grep jdk			查看yum库中jdk的版本
+<span class="copy-code-btn">复制代码</span></code></pre><p></p><figure><img class="lazyload" src="https://user-gold-cdn.xitu.io/2019/9/1/16cead086c4068b4?imageView2/0/w/1280/h/960/ignore-error/1" data-width="1272" data-height="728"><figcaption></figcaption></figure><p></p>
+<pre><code class="hljs bash copyable" lang="bash">yum -y  install java-1.8.0-openjdk*    安装jdk8
+<span class="copy-code-btn">复制代码</span></code></pre><p></p><figure><img class="lazyload" src="https://user-gold-cdn.xitu.io/2019/9/1/16cead34eba320f0?imageView2/0/w/1280/h/960/ignore-error/1" data-width="1280" data-height="556"><figcaption></figcaption></figure>
+耐心的等待jdk的安装，大概2分钟左右，出现下面标志，即代表安装成功
+<figure><img class="lazyload" src="https://user-gold-cdn.xitu.io/2019/9/1/16cead461432660a?imageView2/0/w/1280/h/960/ignore-error/1" data-width="1280" data-height="649"><figcaption></figcaption></figure><p></p>
+<ul>
+<li>2，检查jdk是否安装成功
+命令行里输入 java -version 出现下面标示，可以看到我们的jdk版本 1.8.0_222
+<figure><img class="lazyload" src="https://user-gold-cdn.xitu.io/2019/9/1/16cead5fb1cc304a?imageView2/0/w/1280/h/960/ignore-error/1" data-width="1280" data-height="331"><figcaption></figcaption></figure></li>
+</ul>
+<h1 class="heading" data-id="heading-9">六，上传jar包到服务器</h1>
+<p>我们第五步已经在linux服务器上成功的安装了jdk，接下来就是要想办法把qcl80.jar传到服务器了。可能有同学要问了，你部署服务器，不要在linux服务器里安装tomcat吗，其实我们用springboot开发出来的jar包，已经有内置的tomcat了。所以我们不用再部署tomcat了，只需要把qcl80.jar这个文件上传到服务器，然后用java命令启动即可。</p>
+<p>我们上传文件到Linux服务器用下面这个软件
+</p><figure><img class="lazyload" src="https://user-gold-cdn.xitu.io/2019/9/1/16ceb22de5269333?imageView2/0/w/1280/h/960/ignore-error/1" data-width="246" data-height="238"><figcaption></figcaption></figure>
+你只需要去百度下你电脑对应系统的安装包，安装即可。具体怎么安装这里就不教大家了。<p></p>
+<h2 class="heading" data-id="heading-10">下面教下大家如何使用FileZilla上传文件到服务器。</h2>
+<p>1,打开FileZilla软件， 链接服务器
+</p><figure><img class="lazyload" src="https://user-gold-cdn.xitu.io/2019/9/1/16ceb293b0ca2d04?imageView2/0/w/1280/h/960/ignore-error/1" data-width="1280" data-height="727"><figcaption></figcaption></figure>
+2，去服务器根目录看看
+<figure><img class="lazyload" src="https://user-gold-cdn.xitu.io/2019/9/1/16ceb2a8a3a0812d?imageView2/0/w/1280/h/960/ignore-error/1" data-width="1280" data-height="936"><figcaption></figcaption></figure>
+<figure><img class="lazyload" src="https://user-gold-cdn.xitu.io/2019/9/1/16ceb2b5b870fe57?imageView2/0/w/1280/h/960/ignore-error/1" data-width="1280" data-height="992"><figcaption></figcaption></figure>
+3，上传文件到home文件里，如果在父亲根目录没有home文件，可以自己新建。
+<figure><img class="lazyload" src="https://user-gold-cdn.xitu.io/2019/9/1/16ceb2cf84619bdf?imageView2/0/w/1280/h/960/ignore-error/1" data-width="1280" data-height="535"><figcaption></figcaption></figure>
+到这里我们就成功的上传qcl80.jar到服务器了。下面就教大家如何在服务器里启动我们的项目。<p></p>
+<h1 class="heading" data-id="heading-11">七，在服务器里启动java后台项目</h1>
+<p>1，首先重复上面第四步登录服务器。然后在服务器里输入</p>
+<pre><code class="hljs bash copyable" lang="bash">cd..    <span class="hljs-comment">#用来返回服务器根目录 </span>
+ls      <span class="hljs-comment">#显示当前根目录有那些文件</span>
+<span class="copy-code-btn">复制代码</span></code></pre><p></p><figure><img class="lazyload" src="https://user-gold-cdn.xitu.io/2019/9/1/16ceb2f249f65ad4?imageView2/0/w/1280/h/960/ignore-error/1" data-width="1280" data-height="150"><figcaption></figcaption></figure><p></p>
+<pre><code class="hljs bash copyable" lang="bash"><span class="hljs-built_in">cd</span> home     <span class="hljs-comment">#进入home文件</span>
+ls          <span class="hljs-comment">#显示home文件里都有那些子文件，可以看到我们的qcl80.jar</span>
+<span class="copy-code-btn">复制代码</span></code></pre><p></p><figure><img class="lazyload" src="https://user-gold-cdn.xitu.io/2019/9/1/16ceb30cae801d9a?imageView2/0/w/1280/h/960/ignore-error/1" data-width="1280" data-height="227"><figcaption></figcaption></figure><p></p>
+<p>2，启动java项目</p>
+<pre><code class="hljs bash copyable" lang="bash">java -jar qcl80.jar
+<span class="copy-code-btn">复制代码</span></code></pre><p></p><figure><img class="lazyload" src="https://user-gold-cdn.xitu.io/2019/9/1/16ceb3218ae11048?imageView2/0/w/1280/h/960/ignore-error/1" data-width="1280" data-height="543"><figcaption></figcaption></figure><p></p>
+<p>3,项目启动成功，出现下面的标示，即代表项目启动成功
+</p><figure><img class="lazyload" src="https://user-gold-cdn.xitu.io/2019/9/1/16ceb330dc0832f2?imageView2/0/w/1280/h/960/ignore-error/1" data-width="1280" data-height="672"><figcaption></figcaption></figure>
+4,访问我们服务器的项目
+<figure><img class="lazyload" src="https://user-gold-cdn.xitu.io/2019/9/1/16ceb345720d07bc?imageView2/0/w/1280/h/960/ignore-error/1" data-width="1054" data-height="384"><figcaption></figcaption></figure>
+通过上图可以看到，我们通过公网ip+8080端口，可以成功的访问到我们服务器的数据了。<p></p>
+<ul>
+<li>我们再用手机浏览器试试
+<figure><img class="lazyload" src="https://user-gold-cdn.xitu.io/2019/9/1/16ceb3bd585e7053?imageView2/0/w/1280/h/960/ignore-error/1" data-width="1136" data-height="492"><figcaption></figcaption></figure>
+可以看到我们在手机浏览器里也可以访问到后台数据了。你把上面的这个网址发给你朋友，你朋友应该也可以访问到数据了。
+到这里我们就成功的把一个java项目部署到服务器，并成功的可以让任何人访问了，但是有个问题，你用公网ip做域名，很容易被封的，基本上能成功访问几次以后，就会被拒绝访问了</li>
+</ul>
+<h3 class="heading" data-id="heading-12">所以我们接下来还要讲解如何通过域名访问我们的服务器</h3>
+<p>我会把这些录制成视频来给大家做讲解，</p>
+<h5 class="heading" data-id="heading-13">讲解视频地址：<a target="_blank" href="https://study.163.com/course/courseMain.htm?courseId=1209428915" rel="nofollow noopener noreferrer">study.163.com/course/cour…</a></h5>
+<h1 class="heading" data-id="heading-14">八，服务器绑定域名</h1>
+<p>我们在做域名绑定之前，需要你先自己去注册一个域名，比如我注册的域名是：“www.saibanmall.com”，我这里还是以腾讯云为例</p>
+<ul>
+<li>
+<p>1，登录腾讯云后台，找到自己的域名列表，点击解析
+</p><figure><img class="lazyload" src="https://user-gold-cdn.xitu.io/2019/9/1/16ceb9e0d026e4b0?imageView2/0/w/1280/h/960/ignore-error/1" data-width="1280" data-height="572"><figcaption></figcaption></figure><p></p>
+</li>
+<li>
+<p>2，添加解析规则
+</p><figure><img class="lazyload" src="https://user-gold-cdn.xitu.io/2019/9/1/16ceb9f7f9e3fb5e?imageView2/0/w/1280/h/960/ignore-error/1" data-width="1280" data-height="562"><figcaption></figcaption></figure><p></p>
+</li>
+<li>
+<p>3，绑定自己服务器的公网ip到解析规则
+</p><figure><img class="lazyload" src="https://user-gold-cdn.xitu.io/2019/9/1/16ceba10fa05b512?imageView2/0/w/1280/h/960/ignore-error/1" data-width="1280" data-height="695"><figcaption></figcaption></figure><p></p>
+</li>
+<li>
+<p>4，我们主要设置下面两个解析规则
+</p><figure><img class="lazyload" src="https://user-gold-cdn.xitu.io/2019/9/1/16ceba34ad8b0b7f?imageView2/0/w/1280/h/960/ignore-error/1" data-width="1280" data-height="537"><figcaption></figcaption></figure>
+这样把我们服务器公网ip和域名绑定以后，就可以通过域名访问我们的服务器了，效果如下。
+<figure><img class="lazyload" src="https://user-gold-cdn.xitu.io/2019/9/1/16ceba8bd1f54cde?imageView2/0/w/1280/h/960/ignore-error/1" data-width="980" data-height="384"><figcaption></figcaption></figure>
+再来看下手机浏览器访问的效果
+<figure><img class="lazyload" src="https://user-gold-cdn.xitu.io/2019/9/1/16cebaa6db5bc594?imageView2/0/w/1280/h/960/ignore-error/1" data-width="670" data-height="396"><figcaption></figcaption></figure><p></p>
+</li>
+</ul>
+<h2 class="heading" data-id="heading-15">还有我们小程序访问的效果。</h2>
+<p></p><figure><img class="lazyload" src="https://user-gold-cdn.xitu.io/2019/9/1/16cebb7076e1556a?imageView2/0/w/1280/h/960/ignore-error/1" data-width="1280" data-height="767"><figcaption></figcaption></figure><p></p>
+<p>到这里我们就成功的部署好我的后台服务器了，但是还有几个问题</p>
+<ul>
+<li>1，小程序上线的话需要https请求，所以我们后面还会讲我们的服务器如何支持https</li>
+<li>2，我们通过java -jar qcl80.jar部署的java项目，不能后台运行。所以我们后面还会讲如何让我们的java项目常驻后台运行。</li>
+</ul>
+<h1 class="heading" data-id="heading-16">九，java项目在服务器后台长期运行</h1>
+<p>我们通过上面的方法，会有一个问题，就是我们命令行窗口关闭时，会导致java项目停止，所以我们要通过脚本实现java项目在后台长期运行。</p>
+<h3 class="heading" data-id="heading-17">springboot生成的jar在阿里云的linux服务器后台运行</h3>
+<p></p><figure><img class="lazyload" src="https://user-gold-cdn.xitu.io/2019/9/1/16cecc16f73a216a?imageView2/0/w/1280/h/960/ignore-error/1" data-width="1000" data-height="325"><figcaption></figcaption></figure>
+通过创建stop.sh , start.sh ,run.sh这三个脚本文件来实现后台长久运行springboot
+这里我把运行的qcl80.jar ，start .sh,stop.sh ,run.sh都放在home下的jar目录下<p></p>
+<ul>
+<li>1，创建stop.sh</li>
+</ul>
+<p>vim stop.sh	创建文件然后把下面内容复制进去，一定要把qcl80.jar替换成你的jar</p>
+<pre><code class="hljs bash copyable" lang="bash"><span class="hljs-meta">#!/bin/bash</span>
+PID=$(ps -ef | grep qcl80.jar | grep -v grep | awk <span class="hljs-string">'{ print $2 }'</span>)
+<span class="hljs-keyword">if</span> [ -z <span class="hljs-string">"<span class="hljs-variable">$PID</span>"</span> ]
+<span class="hljs-keyword">then</span>
+    <span class="hljs-built_in">echo</span> Application is already stopped
+<span class="hljs-keyword">else</span>
+    <span class="hljs-built_in">echo</span> <span class="hljs-built_in">kill</span> <span class="hljs-variable">$PID</span>
+    <span class="hljs-built_in">kill</span> <span class="hljs-variable">$PID</span>
+<span class="hljs-keyword">fi</span>
+<span class="copy-code-btn">复制代码</span></code></pre><ul>
+<li>2，创建start.sh,</li>
+</ul>
+<p>这里我们用80端口，这样可以直接通过ip访问，不用再输端口了
+vim start.sh	输入这个命令后然后把下面的内容复制进去</p>
+<pre><code class="hljs bash copyable" lang="bash"><span class="hljs-meta">#!/bin/bash</span>
+nohup java -jar qcl80.jar --server.port=80 &amp;
+<span class="copy-code-btn">复制代码</span></code></pre><ul>
+<li>3，创建run.sh</li>
+</ul>
+<p>整合了关闭和启动的脚本：run.sh，由于会先执行关闭应用，然后再启动应用，这样不会引起端口冲突等问题，适合在持续集成系统中进行反复调用。
+把下面内容复制进去，一定要注意复制时不能少东西</p>
+<pre><code class="hljs bash copyable" lang="bash"><span class="hljs-meta">#!/bin/bash</span>
+<span class="hljs-built_in">echo</span> stop application
+<span class="hljs-built_in">source</span> stop.sh
+<span class="hljs-built_in">echo</span> start application
+<span class="hljs-built_in">source</span> start.sh
+<span class="copy-code-btn">复制代码</span></code></pre><ul>
+<li>4，start .sh,stop.sh ,run.sh都创建后</li>
+</ul>
+<p>./run.sh	运行run.sh脚本
+如果遇到没有权限运行的问题，就在run.sh所在目录下执行
+chmod u+x *.sh	这样就ok了。
+执行完以后，我们可以去nohup.out文件中查看启动的log
+cat nohup.out	这个命令可以查看jar启动的log
+</p><figure><img class="lazyload" src="https://user-gold-cdn.xitu.io/2019/9/1/16cecc4319340260?imageView2/0/w/1280/h/960/ignore-error/1" data-width="1000" data-height="341"><figcaption></figcaption></figure>
+这个时候我们的项目就启动了，就可以通过下面这个网址访问项目了：<a target="_blank" href="http://saibanmall.com/" rel="nofollow noopener noreferrer">saibanmall.com/</a><p></p>
+<p>上面start.sh,stop.sh,run.sh如果觉得写起来麻烦的话，也可以直接获取我写好的。
+</p><figure><img class="lazyload" src="https://user-gold-cdn.xitu.io/2019/9/1/16cecc76add78f9c?imageView2/0/w/1280/h/960/ignore-error/1" data-width="1204" data-height="470"><figcaption></figcaption></figure><p></p>
+<p></p><figure><img class="lazyload" src="https://user-gold-cdn.xitu.io/2019/9/1/16cecc9fa3dd5423?imageView2/0/w/1280/h/960/ignore-error/1" data-width="1280" data-height="905"><figcaption></figcaption></figure><p></p>
+<h3 class="heading" data-id="heading-18">关于服务器的部署我后面也会录制视频出来，敬请关注。</h3>
+<p>有问题可以加我微信：2501902696</p>
+</div></article>
+</body>
+</html>
