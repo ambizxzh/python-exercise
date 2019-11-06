@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<article class="baidu_pl">
+                <div id="article_content" class="article_content clearfix">
+                                                <div class="article-copyright">
+                <span class="creativecommons">
+                <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">
+                    </a>
+            <span>
+                版权声明：本文为博主原创文章，遵循<a href="http://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener"> CC 4.0 BY-SA </a>版权协议，转载请附上原文出处链接和本声明。            </span>
+               <div class="article-source-link2222">
+                    本文链接：<a href="https://blog.csdn.net/qq_38900441/article/details/79946377">https://blog.csdn.net/qq_38900441/article/details/79946377</a>
+                </div>
+            </span>
+                    </div>
+                                                    <link rel="stylesheet" href="https://csdnimg.cn/release/phoenix/template/css/ck_htmledit_views-3019150162.css">
+                                        <link rel="stylesheet" href="https://csdnimg.cn/release/phoenix/template/css/ck_htmledit_views-3019150162.css">
+                <div class="htmledit_views" id="content_views">
+                                            <blockquote>
+<p>requests对象的get和post方法都会返回一个Response对象，这个对象里面存的是服务器返回的所有信息，包括响应头，响应状态码等。其中返回的网页部分会存在.content和.text两个对象中。</p>
+
+<p>两者区别在于，content中间存的是字节码，而text中存的是Beautifulsoup根据猜测的编码方式将content内容编码成字符串。</p>
+
+<p>直接输出content，会发现前面存在b'这样的标志，这是字节字符串的标志，而text是，没有前面的b,对于纯ascii码，这两个可以说一模一样，对于其他的文字，需要正确编码才能正常显示。大部分情况建议使用.text，因为显示的是汉字，但有时会显示乱码，这时需要用.content.decode('utf-8')，中文常用utf-8和GBK，GB2312等。这样可以手工选择文字编码方式。</p>
+
+<p>所以简而言之，.text是现成的字符串，.content还要编码，但是.text不是所有时候显示都正常，这是就需要用.content进行手动编码。</p>
+</blockquote>
+
+<p><br>
+上面的内容转自<a href="https://zhidao.baidu.com/question/941417472703558372.html" rel="nofollow" data-token="71c09448384b5d04e49e9bf5f8a8e91e">https://zhidao.baidu.com/question/941417472703558372.html</a></p>
+
+<h2><br>
+可以举个例子看看：</h2>
+
+<pre class="has">
+<code class="language-python">import requests  
+from bs4 import BeautifulSoup  
+response = requests.get('https://www.baidu.com')  
+re_text = response.text  
+re_content = response.content  
+print (re_text)  
+print (type(re_text))  
+print (re_content)  
+print (type(re_content))  
+response.encoding = 'utf-8'  
+re_text = response.text  
+print (re_text) </code></pre>
+
+                                    </div>
+                    </div>
+    </article>
+</body>
+</html>
